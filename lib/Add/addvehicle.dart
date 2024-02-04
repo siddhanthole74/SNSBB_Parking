@@ -36,12 +36,7 @@ class _AddVehicleState extends State<AddVehicle> {
   FocusNode amount_ = FocusNode();
 
   //
-  final List<String> _item = [
-    "Two Wheeler 🏍️",
-    "Rhree Wheeler 🛺",
-    "Four Wheeler 🚔",
-    "Others 🚚"
-  ];
+  final List<String> _item = ["Two Wheeler 🏍️", "Rhree Wheeler 🛺", "Four Wheeler 🚔", "Others 🚚"];
   //
   final List<String> _itemei = [
     'In',
@@ -51,11 +46,8 @@ class _AddVehicleState extends State<AddVehicle> {
   // for number plate
   final controllerName = TextEditingController();
 
-
-
-  // Entry time
+  // Entry timewe
   //TimeOfDay startTime = new TimeOfDay.now();
-
 
   // for backend database variable
   final controllerMobileNo = TextEditingController();
@@ -68,10 +60,10 @@ class _AddVehicleState extends State<AddVehicle> {
           alignment: AlignmentDirectional.center,
           children: [
             background_container(context),
-           Positioned(
-            top: 120,
-            child: main_container(),
-          ),
+            Positioned(
+              top: 120,
+              child: main_container(),
+            ),
           ],
         ),
       ),
@@ -80,47 +72,48 @@ class _AddVehicleState extends State<AddVehicle> {
 
   Container main_container() {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-      ),
-      height: 550,
-      width: 340,
-      child: SingleChildScrollView(
-        child: Column(
-        children: [
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                imagePick(0), // photo capture
-                // SizedBox(width: 10),
-                // imagePick(1),
-                // SizedBox(width: 10),
-                // imagePick(2),
-              ],
-            ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+        ),
+        height: 600,
+        width: 340,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    imagePick(0), // photo capture
+                    // SizedBox(width: 10),
+                    // imagePick(1),
+                    // SizedBox(width: 10),
+                    // imagePick(2),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              TypeVehicle(), // type of vehicle
+              SizedBox(height: 30),
+              //explain(),
+              TakeName(), // Mobile no of driver
+              SizedBox(height: 30),
+              TakeMobileNo(),
+              SizedBox(height: 30),
+              Name(),
+              SizedBox(height: 30),
+              StatusVehicle(), // in out status
+              SizedBox(height: 30),
+              //date_time(),  //
+              //Spacer(),
+              save(),
+              SizedBox(height: 20),
+            ],
           ),
-          SizedBox(height: 30),
-          TypeVehicle(), // type of vehicle
-          SizedBox(height: 30),
-          //explain(),
-          TakeMobileNo(), // Mobile no of driver
-          SizedBox(height: 30),
-          Name(),
-          SizedBox(height: 30),
-          StatusVehicle(), // in out status
-          SizedBox(height: 30),
-          //date_time(),  //
-          //Spacer(),
-          save(),
-          SizedBox(height: 20),
-        ],
-      ),
-        )
-    );
+        ));
   }
 
   // in order to take pic of driver
@@ -161,8 +154,7 @@ class _AddVehicleState extends State<AddVehicle> {
       print(image.path);
       Reference referenceRoot = FirebaseStorage.instance.ref();
       Reference referenceDirImage = referenceRoot.child('image');
-      Reference referenceImageToUpload = referenceDirImage
-          .child('${DateTime.now().millisecondsSinceEpoch}.png');
+      Reference referenceImageToUpload = referenceDirImage.child('${DateTime.now().millisecondsSinceEpoch}.png');
 
       try {
         await referenceImageToUpload.putFile(File(image.path));
@@ -180,59 +172,59 @@ class _AddVehicleState extends State<AddVehicle> {
     setState(() {});
   }
 
-GestureDetector imagePick(int ind) {
-  return GestureDetector(
-    onTap: () => imageFromCamera(ind),
-    child: imageUrls.length < ind + 1
-        ? DottedBorder(
-            color: Colors.black,
-            borderType: BorderType.Circle,
-            radius: const Radius.circular(15),
-            dashPattern: const [10, 4],
-            strokeCap: StrokeCap.round,
-            child: Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.camera_alt,
-                    size: 20,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Capture Photo",
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
-                  )
-                ],
-              ),
-            ),
-          )
-        : Stack(
-            children: [
-              Container(
+  GestureDetector imagePick(int ind) {
+    return GestureDetector(
+      onTap: () => imageFromCamera(ind),
+      child: imageUrls.length < ind + 1
+          ? DottedBorder(
+              color: Colors.black,
+              borderType: BorderType.Circle,
+              radius: const Radius.circular(15),
+              dashPattern: const [10, 4],
+              strokeCap: StrokeCap.round,
+              child: Container(
                 height: 100,
                 width: 100,
-                child: Image.network(
-                  imageUrls[ind],
-                  fit: BoxFit.contain,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.camera_alt,
+                      size: 20,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Capture Photo",
+                      style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
+                    )
+                  ],
                 ),
               ),
-              Positioned.fill(
-                child: Center(
-                  child: CircularProgressIndicator(),
+            )
+          : Stack(
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  child: Image.network(
+                    imageUrls[ind],
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-            ],
-          ),
-  );
-}
+                Positioned.fill(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
 // Future<void> imageFromGallary(int ind, {bool isCamera = false}) async {
 //   final picker = ImagePicker();
 //   final pickedFile = await pick+er.getImage(
@@ -252,7 +244,9 @@ GestureDetector imagePick(int ind) {
     return GestureDetector(
       onTap: () {
         final products = Products(
-          name: controllerName.text,
+          vehicleNumner: controllerName.text,
+          ownerName: nameController.text,
+          type: selctedItem ?? "",
           //product: selctedItem!,
           //Quantity: controllerQuantity.text,
           imageUrls: imageUrls,
@@ -270,8 +264,7 @@ GestureDetector imagePick(int ind) {
 
         // Navigator.of(context).pop();  // home screen la
 
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Bottom()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Bottom()));
       },
       child: Container(
         alignment: Alignment.center,
@@ -317,23 +310,16 @@ GestureDetector imagePick(int ind) {
     );
   }
 
-
-
-
   Widget date_time() {
     return Container(
       alignment: Alignment.bottomLeft,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 2, color: Color(0xffC5C5C5))),
+          borderRadius: BorderRadius.circular(10), border: Border.all(width: 2, color: Color(0xffC5C5C5))),
       width: 300,
       child: TextButton(
         onPressed: () async {
           DateTime? newDate = await showDatePicker(
-              context: context,
-              initialDate: date,
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2100));
+              context: context, initialDate: date, firstDate: DateTime(2020), lastDate: DateTime(2100));
           if (newDate == Null) return;
           setState(() {
             date = newDate!;
@@ -354,13 +340,12 @@ GestureDetector imagePick(int ind) {
     return GestureDetector(
       onTap: () async {
         TimeOfDay? newtime = await showTimePicker(
-            context: context,
-            initialTime: stringToTimeOfDay(endTime.format(context)),
-          );
-          if (newtime != null) {
-            endTime = stringToTimeOfDay(newtime.format(context));
-            
-          }
+          context: context,
+          initialTime: stringToTimeOfDay(endTime.format(context)),
+        );
+        if (newtime != null) {
+          endTime = stringToTimeOfDay(newtime.format(context));
+        }
       },
       child: Container(
         alignment: Alignment.bottomLeft,
@@ -380,8 +365,6 @@ GestureDetector imagePick(int ind) {
       ),
     );
   }
-
-
 
   Padding StatusVehicle() {
     return Padding(
@@ -453,12 +436,36 @@ GestureDetector imagePick(int ind) {
           labelText: 'Enter Mobile No',
           labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Color(0xffC5C5C5))),
+              borderRadius: BorderRadius.circular(10), borderSide: BorderSide(width: 2, color: Color(0xffC5C5C5))),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(width: 2, color: Colors.deepOrangeAccent)),
           suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+        ),
+      ),
+    );
+  }
+
+  //Name
+  TextEditingController nameController = TextEditingController();
+  Padding TakeName() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        controller: nameController,
+        keyboardType: TextInputType.name,
+        //focusNode: ex,
+        //controller: expalin_C,// here for storing the name of farmer modify code later
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          labelText: 'Enter Your name',
+          labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10), borderSide: BorderSide(width: 2, color: Color(0xffC5C5C5))),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(width: 2, color: Colors.deepOrangeAccent)),
+          // suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
         ),
       ),
     );
@@ -497,8 +504,6 @@ GestureDetector imagePick(int ind) {
     );
   }
 
-
-
   Padding amount() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -511,8 +516,7 @@ GestureDetector imagePick(int ind) {
           labelText: 'amount',
           labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Color(0xffC5C5C5))),
+              borderRadius: BorderRadius.circular(10), borderSide: BorderSide(width: 2, color: Color(0xffC5C5C5))),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(width: 2, color: Colors.deepOrangeAccent)),
@@ -521,7 +525,7 @@ GestureDetector imagePick(int ind) {
     );
   }
 
-  // for In time 
+  // for In time
 
   Padding explain() {
     return Padding(
@@ -534,8 +538,7 @@ GestureDetector imagePick(int ind) {
           labelText: 'explain',
           labelStyle: TextStyle(fontSize: 17, color: Colors.grey.shade500),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 2, color: Color(0xffC5C5C5))),
+              borderRadius: BorderRadius.circular(10), borderSide: BorderSide(width: 2, color: Color(0xffC5C5C5))),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(width: 2, color: Colors.deepOrangeAccent)),
@@ -548,8 +551,7 @@ GestureDetector imagePick(int ind) {
     return Container(
       alignment: Alignment.bottomLeft,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 2, color: Color(0xffC5C5C5))),
+          borderRadius: BorderRadius.circular(10), border: Border.all(width: 2, color: Color(0xffC5C5C5))),
       width: 300,
       child: TextButton(
         onPressed: () async {
@@ -673,10 +675,7 @@ GestureDetector imagePick(int ind) {
                     ),
                     Text(
                       'Vehicle Details',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
                     ),
                     Icon(
                       Icons.attach_file_outlined,
@@ -695,13 +694,12 @@ GestureDetector imagePick(int ind) {
   // query in order to add entry in the database
 
   Future createProduct(Products user) async {
-    final docUser = FirebaseFirestore.instance.collection('VehicleInfo').doc(user.name);
+    final docUser = FirebaseFirestore.instance.collection('VehicleInfo').doc(user.vehicleNumner);
     //user.id=docUser.id;
     final json = user.toJson();
     await docUser.set(json).then(
-          (value) => Fluttertoast.showToast(msg: "Notified Succesfully").then(
-              (value) => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Bottom()))),
+          (value) => Fluttertoast.showToast(msg: "Notified Succesfully")
+              .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => Bottom()))),
         );
   }
 }
@@ -709,7 +707,9 @@ GestureDetector imagePick(int ind) {
 // bulding a class in order to add In and out entry in the database
 
 class Products {
-  final String name;
+  final String vehicleNumner;
+  final String ownerName;
+  final String type;
   //final String product;
   //final String Quantity;
   final List<String> imageUrls;
@@ -728,7 +728,9 @@ class Products {
   //final List price;
 
   Products({
-    required this.name, // for number plate 
+    required this.vehicleNumner, // for number plate
+    required this.ownerName,
+    required this.type,
     //required this.product,
     //required this.Quantity,
     required this.mobileno,
@@ -744,17 +746,19 @@ class Products {
   });
 
   Map<String, dynamic> toJson() => {
-        'Car No :': name,
+        'vehicle_no': vehicleNumner,
+        'name': ownerName,
+        'type': type,
         //'Product': product,
         //'Quantity in KG': Quantity,
         'images': imageUrls,
-        'Mobileno': mobileno,
+        'mobile_no': mobileno,
         //'Location': location,
         //'Deal_Date': dealDate.toString(),
         //'Vehicle_In_Date': startBidingDate.toString(),
         //'End_Biding_Date': endBidingDate.toString(),
-        'Entry_time': startTime.toString(),
-        'Out time': endTime.toString(),
+        'in_time': startTime.toString(),
+        'out_time': endTime.toString(),
         //'userId': userId,
         //'price': price
       };

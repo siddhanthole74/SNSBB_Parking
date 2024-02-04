@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,18 +14,60 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-   List<String> demoVehicleTypes = ["Two Wheeler 🏍️", "Three Wheeler 🛺", "Four Wheeler 🚔", "Others 🚚"];
-    List<int> demoCounts = [200, 300, 500, 600];
+  List<String> demoVehicleTypes = ["Two Wheeler 🏍️", "Three Wheeler 🛺", "Four Wheeler 🚔", "Others 🚚"];
+  List<int> demoCounts = [200, 300, 500, 600];
+  CollectionReference _collectionRef = FirebaseFirestore.instance.collection('VehicleInfo');
+  List<Map<String, dynamic>> data = [];
+  int totalVehicles = 0;
+  int twoWheeler = 0;
+  int threeWheeler = 0;
+  int fourWheeler = 0;
+  int others = 0;
+  Future<void> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    debugPrint("-----------------------------------------------------------");
+    List<Map<String, dynamic>> mp = allData as List<Map<String, dynamic>>;
+    print((allData[0] as Map<String, dynamic>)['name']);
+    // print(mp['name']);
+
+    setState(() {
+      for (int i = 0; i < mp.length; i++) {
+        if (mp[i]['type'] == "Three Wheeler 🛺") {
+          threeWheeler++;
+        } else if (mp[i]['type'] == "Two Wheeler 🏍️") {
+          twoWheeler++;
+        } else if (mp[i]['type'] == "Four Wheeler 🚔") {
+          fourWheeler++;
+        } else if (mp[i]['type'] == "Others 🚚") {
+          others++;
+        }
+      }
+      data = allData as List<Map<String, dynamic>>;
+      totalVehicles = allData.length;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Color(0xFF2094AC),
+        //backgroundColor: Color(0xFF2094AC),
         body: SafeArea(
-          //backgroundColor: Color(0xFF2094AC)
+            //backgroundColor: Color(0xFF2094AC)
             child: CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: SizedBox(height:340, child: _head()),
+          child: SizedBox(height: 340, child: _head(totalVehicles)),
         ),
         SliverToBoxAdapter(
           child: Padding(
@@ -38,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.black,
                   ),
                 ),
-              
               ],
             ),
           ),
@@ -52,67 +96,67 @@ class _HomeScreenState extends State<HomeScreen> {
         //     childCount: box.length,
         //   ),
         // )
-        SliverToBoxAdapter(
-              child: SizedBox(
-                height: 200, // Adjust the height based on your needs
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: 4, // Number of cards you want
-                  itemBuilder: (context, index) {
-                    // Adjust the data based on your requirement
-                   String vehicleType = demoVehicleTypes[index];
-                    int count = demoCounts[index];
 
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Card(
-                        elevation: 4,
-                        margin: EdgeInsets.all(10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          width: 250, // Adjust the width based on your needs
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Color(0xFF92d6e5),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                vehicleType,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF12191F),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                'Count: $count',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF12191F),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: 200, // Adjust the height based on your needs
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: 4, // Number of cards you want
+              itemBuilder: (context, index) {
+                // Adjust the data based on your requirement
+                String vehicleType = demoVehicleTypes[index];
+                int count = demoCounts[index];
+
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Card(
+                    elevation: 4,
+                    margin: EdgeInsets.all(10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      width: 250, // Adjust the width based on your needs
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFF92d6e5),
                       ),
-                    );
-                  },
-                ),
-              ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            vehicleType,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF12191F),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Count: $count',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF12191F),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
+          ),
+        ),
       ],
     )));
   }
-
 }
 
-Widget _head() {
+Widget _head(int total) {
   return Stack(
     children: [
       Column(
@@ -135,33 +179,32 @@ Widget _head() {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(7),
                     child: GestureDetector(
-    onTap: () {
-      // Replace the coordinates (latitude and longitude) with your desired location
-      
-      
-      // Create the maps link
-      String mapsLink = 'https://maps.app.goo.gl/JtfWSvwQH4kS6Rgw5';
-      
-      // Open the maps link using the url_launcher package
-      launch(mapsLink);
-    },
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(7),
-      child: Container(
-        height: 40,
-        width: 40,
-        color: Color.fromRGBO(250, 250, 250, 0.1),
-        child: Icon(
-          Icons.location_on,
-          size: 30,
-          color: Colors.red,
-        ),
-      ),
-    ),
-  ),
+                      onTap: () {
+                        // Replace the coordinates (latitude and longitude) with your desired location
+
+                        // Create the maps link
+                        String mapsLink = 'https://maps.app.goo.gl/JtfWSvwQH4kS6Rgw5';
+
+                        // Open the maps link using the url_launcher package
+                        launch(mapsLink);
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          color: Color.fromRGBO(250, 250, 250, 0.1),
+                          child: Icon(
+                            Icons.location_on,
+                            size: 30,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: const EdgeInsets.only(top: 35, left: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,7 +284,7 @@ Widget _head() {
                 child: Row(
                   children: [
                     Text(
-                      '3000',
+                      '$total',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
