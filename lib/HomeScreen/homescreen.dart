@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> demoVehicleTypes = ["Two Wheeler 🏍️", "Three Wheeler 🛺", "Four Wheeler 🚔", "Others 🚚"];
   List<int> demoCounts = [200, 300, 500, 600];
   CollectionReference _collectionRef = FirebaseFirestore.instance.collection('VehicleInfo');
-  List<Map<String, dynamic>> data = [];
+  // List<Map<String, dynamic>> data = [];
   int totalVehicles = 0;
   int twoWheeler = 0;
   int threeWheeler = 0;
@@ -30,23 +30,25 @@ class _HomeScreenState extends State<HomeScreen> {
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     debugPrint("-----------------------------------------------------------");
-    List<Map<String, dynamic>> mp = allData as List<Map<String, dynamic>>;
-    print((allData[0] as Map<String, dynamic>)['name']);
+    // List<Map<String, dynamic>> mp = allData as List<Map<String, dynamic>>;
+    print(allData[0].runtimeType);
+    // print((allData[0] as Map<String, dynamic>)['name']);
     // print(mp['name']);
 
     setState(() {
-      for (int i = 0; i < mp.length; i++) {
-        if (mp[i]['type'] == "Three Wheeler 🛺") {
+      for (int i = 0; i < allData.length; i++) {
+        Map<String, dynamic> mp = allData[i] as Map<String, dynamic>;
+        if (mp['type'] == "Three Wheeler 🛺") {
           threeWheeler++;
-        } else if (mp[i]['type'] == "Two Wheeler 🏍️") {
+        } else if (mp['type'] == "Two Wheeler 🏍️") {
           twoWheeler++;
-        } else if (mp[i]['type'] == "Four Wheeler 🚔") {
+        } else if (mp['type'] == "Four Wheeler 🚔") {
           fourWheeler++;
-        } else if (mp[i]['type'] == "Others 🚚") {
+        } else if (mp['type'] == "Others 🚚") {
           others++;
         }
       }
-      data = allData as List<Map<String, dynamic>>;
+      // data = allData as List<Map<String, dynamic>>;
       totalVehicles = allData.length;
     });
   }
