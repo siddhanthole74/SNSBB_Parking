@@ -12,15 +12,16 @@ import 'package:snm_parking_final/widgets/bottomnavigationbar.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
-  Platform.isAndroid ? await Firebase.initializeApp(
-    options:const  FirebaseOptions(
-               
-      apiKey: 'AIzaSyAyGqCbRTSeiCHnY-8HHVs-bpgnc4hnm9I',
-      appId: '1:157869329668:android:328d0e1c40d9b750709451',
-      messagingSenderId: '157869329668',
-      projectId: 'snsd-project',
-      storageBucket: 'snsd-project.appspot.com'
-    ),) : await Firebase.initializeApp();
+  Platform.isAndroid
+      ? await Firebase.initializeApp(
+          options: const FirebaseOptions(
+              apiKey: 'AIzaSyAyGqCbRTSeiCHnY-8HHVs-bpgnc4hnm9I',
+              appId: '1:157869329668:android:328d0e1c40d9b750709451',
+              messagingSenderId: '157869329668',
+              projectId: 'snsd-project',
+              storageBucket: 'snsd-project.appspot.com'),
+        )
+      : await Firebase.initializeApp();
 
   runApp(MyApp());
 }
@@ -39,5 +40,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
