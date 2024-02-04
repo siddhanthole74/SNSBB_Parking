@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "157869329668",
+    "project_id": "snsd-project",
+    "storage_bucket": "snsd-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157869329668:android:328d0e1c40d9b750709451",
+        "android_client_info": {
+          "package_name": "com.example.snm_parking_final"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyGqCbRTSeiCHnY-8HHVs-bpgnc4hnm9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
