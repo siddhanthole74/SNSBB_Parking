@@ -23,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int threeWheeler = 0;
   int fourWheeler = 0;
   int others = 0;
+  int inVehicles = 0;
+  int outVehicles = 0;
   Future<void> getData() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionRef.get();
@@ -47,6 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
         } else if (mp['type'] == "Others 🚚") {
           others++;
         }
+
+        if (mp["status"] == "Out") {
+          outVehicles++;
+        } else {
+          inVehicles++;
+        }
       }
       // data = allData as List<Map<String, dynamic>>;
       totalVehicles = allData.length;
@@ -69,11 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: SizedBox(height: 340, child: _head(totalVehicles)),
+          child: SizedBox(height: 340, child: _head(totalVehicles, inVehicles, outVehicles)),
         ),
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -101,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         SliverToBoxAdapter(
           child: SizedBox(
-            height: 200, // Adjust the height based on your needs
+            height: 310, // Adjust the height based on your needs
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: 4, // Number of cards you want
@@ -111,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 int count = demoCounts[index];
 
                 return Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2),
                   child: Card(
                     elevation: 4,
                     margin: EdgeInsets.all(10),
@@ -130,16 +138,41 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Text(
                             vehicleType,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF12191F),
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Count: $count',
-                            style: TextStyle(
+                          const SizedBox(height: 10),
+                          if (index == 0)
+                            Text(
+                              'Count: $twoWheeler',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF12191F),
+                              ),
+                            ),
+                          if (index == 1)
+                            Text(
+                              'Count: $threeWheeler',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF12191F),
+                              ),
+                            ),
+                          if (index == 2)
+                            Text(
+                              'Count: $fourWheeler',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF12191F),
+                              ),
+                            ),
+                          if (index == 3)
+                            Text(
+                              'Count: $others',
+                              style: const TextStyle(
                               fontSize: 16,
                               color: Color(0xFF12191F),
                             ),
@@ -158,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget _head(int total) {
+Widget _head(int total, int inVehicles, int outVehicles) {
   return Stack(
     children: [
       Column(
@@ -166,7 +199,7 @@ Widget _head(int total) {
           Container(
             width: double.infinity,
             height: 240,
-            decoration: BoxDecoration(
+            decoration:const BoxDecoration(
               color: Color(0xFF2094AC),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
@@ -195,8 +228,8 @@ Widget _head(int total) {
                         child: Container(
                           height: 40,
                           width: 40,
-                          color: Color.fromRGBO(250, 250, 250, 0.1),
-                          child: Icon(
+                          color:const  Color.fromRGBO(250, 250, 250, 0.1),
+                          child: const Icon(
                             Icons.location_on,
                             size: 30,
                             color: Colors.red,
@@ -207,7 +240,7 @@ Widget _head(int total) {
                   ),
                 ),
                 const Padding(
-                  padding: const EdgeInsets.only(top: 35, left: 10),
+                  padding:  EdgeInsets.only(top: 35, left: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -315,7 +348,7 @@ Widget _head(int total) {
                         ),
                         SizedBox(width: 7),
                         Text(
-                          'In 1500',
+                          'In $inVehicles',
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
@@ -337,7 +370,7 @@ Widget _head(int total) {
                         ),
                         SizedBox(width: 7),
                         Text(
-                          'Out 3000',
+                          'Out $outVehicles',
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,

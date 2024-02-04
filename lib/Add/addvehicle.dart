@@ -36,7 +36,7 @@ class _AddVehicleState extends State<AddVehicle> {
   FocusNode amount_ = FocusNode();
 
   //
-  final List<String> _item = ["Two Wheeler 🏍️", "Rhree Wheeler 🛺", "Four Wheeler 🚔", "Others 🚚"];
+  final List<String> _item = ["Two Wheeler 🏍️", "Three Wheeler 🛺", "Four Wheeler 🚔", "Others 🚚"];
   //
   final List<String> _itemei = [
     'In',
@@ -247,6 +247,7 @@ class _AddVehicleState extends State<AddVehicle> {
           vehicleNumner: controllerName.text,
           ownerName: nameController.text,
           type: selctedItem ?? "",
+          status: selctedItemi!,
           //product: selctedItem!,
           //Quantity: controllerQuantity.text,
           imageUrls: imageUrls,
@@ -692,11 +693,27 @@ class _AddVehicleState extends State<AddVehicle> {
   }
 
   // query in order to add entry in the database
+  Future<bool> checkIfDocExists(String docId) async {
+    try {
+      // Get reference to Firestore collection
+      var collectionRef = FirebaseFirestore.instance.collection('VehicleInfo');
+
+      var doc = await collectionRef.doc(docId).get();
+      return doc.exists;
+    } catch (e) {
+      throw e;
+    }
+  }
 
   Future createProduct(Products user) async {
-    final docUser = FirebaseFirestore.instance.collection('VehicleInfo').doc(user.vehicleNumner);
-    //user.id=docUser.id;
     final json = user.toJson();
+    final docUser = FirebaseFirestore.instance.collection('VehicleInfo').doc(user.vehicleNumner);
+    if (await checkIfDocExists(user.vehicleNumner)) {
+      print("0---------------------00430-========--------------------------");
+      await docUser.update({"status": user.status});
+    }
+    //user.id=docUser.id;
+
     await docUser.set(json).then(
           (value) => Fluttertoast.showToast(msg: "Notified Succesfully")
               .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => Bottom()))),
@@ -713,6 +730,7 @@ class Products {
   //final String product;
   //final String Quantity;
   final List<String> imageUrls;
+  final String status;
 
   ///
   final String mobileno;
@@ -731,6 +749,7 @@ class Products {
     required this.vehicleNumner, // for number plate
     required this.ownerName,
     required this.type,
+    required this.status,
     //required this.product,
     //required this.Quantity,
     required this.mobileno,
@@ -749,6 +768,7 @@ class Products {
         'vehicle_no': vehicleNumner,
         'name': ownerName,
         'type': type,
+        'status': status,
         //'Product': product,
         //'Quantity in KG': Quantity,
         'images': imageUrls,
